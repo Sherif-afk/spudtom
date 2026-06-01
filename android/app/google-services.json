@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "121198675863",
+    "project_id": "spudtom-ai",
+    "storage_bucket": "spudtom-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121198675863:android:5c96edf8e5d09b07f6a6d2",
+        "android_client_info": {
+          "package_name": "com.spudtom.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121198675863-n69d68ng7j5uks8leo224kmk9heqdja9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spudtom.app",
+            "certificate_hash": "cd46ffb751da0b36cc4c22b25b79e65f13da9d21"
+          }
+        },
+        {
+          "client_id": "121198675863-dcjrjddd32dmoepke9djb163s28kn55k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9eed5ErqcbG9tUIwxhl3S9lcmM7ee_rY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121198675863-93kh3n4v4rcvbm0kkc7odr2q10v3pn8f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "121198675863-nqrujlovuu67ochie6v5m4cl3oq684mv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gpTestGemini"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- السطر اللي كان ناقص: اسم الأبلكيشن بتاعك -->
+    <string name="app_name">SpudTom</string>
+
+    <!-- ده الـ App ID بتاعك -->
+    <string name="facebook_app_id">1664532374582757</string>
+    
+    <!-- متنساش تحط الـ Client Token بتاعك هنا -->
+    <string name="facebook_client_token">d3b4c63460e38f77688d58dde37c97f2</string>
+    
+    <!-- ده بردو الـ App ID بتاعك بس قبله حرفين fb -->
+    <string name="facebook_login_protocol_scheme">fb1664532374582757</string>
+</resources>
