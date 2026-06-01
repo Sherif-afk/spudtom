@@ -72,7 +72,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  // 👇 الدالة الجديدة اللي بتعرض رسالة التأكيد الشيك قبل المسح
   void _showClearChatDialog() {
     showDialog(
       context: context,
@@ -100,8 +99,8 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // بنقفل الرسالة الأول
-              _clearChat(); // بعدين ننفذ المسح
+              Navigator.pop(context); 
+              _clearChat();
             },
             child: Text(
               "Clear",
@@ -177,7 +176,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.redAccent),
-            onPressed: _showClearChatDialog, // 👈 ربطنا الزرار بالرسالة التحذيرية هنا
+            onPressed: _showClearChatDialog, 
             tooltip: "Clear Chat History",
           ),
         ],
