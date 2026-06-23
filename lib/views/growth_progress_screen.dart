@@ -860,11 +860,10 @@ class _GrowthProgressScreenState extends State<GrowthProgressScreen> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // 👇 الأيقونة الجديدة بتاعة التعديل
                 IconButton(
                   icon: const Icon(
                     Icons.edit_outlined,
-                    color: Colors.blueAccent,
+                    color: Colors.black,
                   ),
                   onPressed: () => _showEditNameDialog(index),
                   tooltip: "Edit Plant Name",

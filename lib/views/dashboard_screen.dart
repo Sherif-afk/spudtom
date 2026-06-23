@@ -28,7 +28,6 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   String _firstName = '';
-  //  المتغيرات الجديدة (ضيفي كلمة static في أولهم)
   static String _temperature = '--';
   static String _weatherCondition = 'Loading';
   static bool _isLoadingWeather = true;
@@ -111,7 +110,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _loadWeatherData() async {
-    // 🛠️ الخطوة الثانية: خفي الـ Loading فوراً لو الـ Memory فيها طقس محفوظ عشان الشاشة ما تتهزش
     if (_temperature != '--' && _temperature != 'N/A') {
       _isLoadingWeather = false;
     }
@@ -122,7 +120,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         'last_weather_notification_time',
       );
 
-      // 🛠️ التعديل هنا وبس: لو البيانات معروضة ومرش أقل من 15 دقيقة، اخرج فوراً وحافظ على الـ UI بدون ريفريش
       if (_temperature != '--' &&
           _temperature != 'N/A' &&
           lastNotificationTimeStr != null) {
