@@ -18,7 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   bool _isCameraPressed = false;
 
-  List<Widget> get _screens => [
+  // 🛠️ التعديل الأول والوحيد: شيلنا الـ get وخليناها لستة ثابتة بتتخلق مرة واحدة بس في الذاكرة
+  late final List<Widget> _screens = [
     DashboardScreen(
       onChangeTab: _onItemTapped,
       showScaffold: false,
@@ -232,10 +233,7 @@ class NotchedBarPainter extends CustomPainter {
     );
     final Path roundedPath = Path()
       ..addRRect(
-        RRect.fromRectAndRadius(
-          hostRect,
-          const Radius.circular(30.0),
-        ),
+        RRect.fromRectAndRadius(hostRect, const Radius.circular(30.0)),
       );
     final Path finalPath = Path.combine(
       PathOperation.intersect,

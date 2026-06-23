@@ -28,9 +28,10 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   String _firstName = '';
-  String _temperature = '--';
-  String _weatherCondition = 'Loading';
-  bool _isLoadingWeather = true;
+  //  المتغيرات الجديدة (ضيفي كلمة static في أولهم)
+  static String _temperature = '--';
+  static String _weatherCondition = 'Loading';
+  static bool _isLoadingWeather = true;
   int _notificationCount = 0;
   String? _profileImagePath;
 
@@ -110,18 +111,81 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _loadWeatherData() async {
-    final weatherData = await WeatherService.fetchCurrentWeatherForUI();
-    if (mounted) {
-      setState(() {
-        if (weatherData != null) {
-          _temperature = weatherData['current']['temp_c'].round().toString();
-          _weatherCondition = weatherData['current']['condition']['text'];
+    // 🛠️ الخطوة الثانية: خفي الـ Loading فوراً لو الـ Memory فيها طقس محفوظ عشان الشاشة ما تتهزش
+    if (_temperature != '--' && _temperature != 'N/A') {
+      _isLoadingWeather = false;
+    }
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastNotificationTimeStr = prefs.getString(
+        'last_weather_notification_time',
+      );
+
+      // 🛠️ التعديل هنا وبس: لو البيانات معروضة ومرش أقل من 15 دقيقة، اخرج فوراً وحافظ على الـ UI بدون ريفريش
+      if (_temperature != '--' &&
+          _temperature != 'N/A' &&
+          lastNotificationTimeStr != null) {
+        final lastNotificationTime = DateTime.parse(lastNotificationTimeStr);
+        final differenceInMinutes = DateTime.now()
+            .difference(lastNotificationTime)
+            .inMinutes;
+
+        if (differenceInMinutes < 15) {
+          return;
+        }
+      }
+
+      final weatherData = await WeatherService.fetchCurrentWeatherForUI();
+      if (mounted) {
+        setState(() {
+          if (weatherData != null) {
+            _temperature = weatherData['current']['temp_c'].round().toString();
+            _weatherCondition = weatherData['current']['condition']['text'];
+          } else {
+            _temperature = "N/A";
+            _weatherCondition = "Error";
+          }
+          _isLoadingWeather = false;
+        });
+      }
+
+      if (weatherData != null) {
+        final now = DateTime.now();
+
+        if (lastNotificationTimeStr == null) {
+          await WeatherService.checkAndNotifyWeather(context).then((_) {
+            _loadNotificationCount();
+          });
+          await prefs.setString(
+            'last_weather_notification_time',
+            now.toIso8601String(),
+          );
         } else {
+          final lastNotificationTime = DateTime.parse(lastNotificationTimeStr);
+          final differenceInMinutes = now
+              .difference(lastNotificationTime)
+              .inMinutes;
+
+          if (differenceInMinutes >= 15) {
+            await WeatherService.checkAndNotifyWeather(context).then((_) {
+              _loadNotificationCount();
+            });
+            await prefs.setString(
+              'last_weather_notification_time',
+              now.toIso8601String(),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
           _temperature = "N/A";
           _weatherCondition = "Error";
-        }
-        _isLoadingWeather = false;
-      });
+          _isLoadingWeather = false;
+        });
+      }
     }
   }
 
@@ -364,8 +428,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               iconBgColor: const Color(0xFFF5EFE7),
               iconColor: AppColors.primaryGreen,
               onTap: () {
-                Navigator.push(
-                  context,
+                Navigator.of(context, rootNavigator: false).push(
                   MaterialPageRoute(
                     builder: (_) => const GrowthProgressScreen(),
                   ),
@@ -464,4 +527,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+}
+
+class NotchedBarPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Rect hostRect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final Rect guestRect = Rect.fromCircle(
+      center: Offset(size.width / 2, 10),
+      radius: 43.0,
+    );
+    final Path notchedPath = const CircularNotchedRectangle().getOuterPath(
+      hostRect,
+      guestRect,
+    );
+    final Path roundedPath = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(hostRect, const Radius.circular(30.0)),
+      );
+    final Path finalPath = Path.combine(
+      PathOperation.intersect,
+      notchedPath,
+      roundedPath,
+    );
+
+    canvas.drawShadow(finalPath, Colors.black.withOpacity(0.15), 15, true);
+    final paint = Paint()
+      ..color = const Color(0xFF1A331A)
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(finalPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

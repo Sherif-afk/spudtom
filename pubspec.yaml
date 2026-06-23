@@ -79,7 +79,18 @@ flutter:
     - assets/google_logo.jpg
     - .env
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   change_app_package_name: ^1.5.0
+  flutter_launcher_icons: ^0.13.1 # 👈 لازم تحطي الإصدار هنا وتنزلي سطر جديد
+
+# 🛠️ انزلي تحت خالص في آخر الملف واكتبي دول على أول السطر بدون مسافات قبلهم:
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
+  min_sdk_android: 21
+  
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
