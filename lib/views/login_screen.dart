@@ -274,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 25),
 
                         _buildTextField(
-                          hint: "Email or Phone Number",
+                          hint: "Email",
                           icon: Icons.email_outlined,
                           controller: _emailController,
                         ),
